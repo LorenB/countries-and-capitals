@@ -1,0 +1,19 @@
+{
+  "name": "countries-and-capitals",
+  "version": "0.0.0",
+  "description": "A geography app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "testrun"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LorenB/countries-and-capitals.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LorenB/countries-and-capitals/issues"
+  },
+  "homepage": "https://github.com/LorenB/countries-and-capitals"
+}

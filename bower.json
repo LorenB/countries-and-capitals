@@ -1,0 +1,21 @@
+{
+  "name": "countries-and-capitals",
+  "version": "0.0.0",
+  "authors": [
+    "LorenB <loren.barcus@gmail.com>"
+  ],
+  "description": "A geograpy app.",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "~0.11.0",
+    "bootstrap": "~3.2.0"
+  }
+}

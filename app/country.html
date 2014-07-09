@@ -1,15 +1,20 @@
-<h2>USA</h2>
-<span>Populating of Coutnry:</span><span>313,000,000</span><br/>
-<span>Area:</span><span>9,147,000</span><br/>
-<span>Capital:</span><span>Washington DC</span><br/>
-<span>Poluation of Capital:</span><span>632,323</span><br/>
-<span>3 neighbors:</span><span><a href="#">Canada</a><a href="#">Cuba</a><a href="#">Mexico</a></span><br/>
+<h2>{{country.geonames[0].countryName}}</h2>
+<span>Populating of Coutnry:</span><span>{{country.geonames[0].population}}</span><br/>
+<span>Area:</span><span>{{country.geonames[0].areaInSqKm}}</span><br/>
+<span>Capital:</span><span>{{country.geonames[0].capital}}</span><br/>
+<span>Poluation of Capital:</span><span>?</span><br/>
+<span>{{countryNeighbors.totalResultsCount}}</span><span> neighbors:</span><span ng-repeat='neighbor in countryNeighbors.geonames'><a href="#">{{neighbor.countryName}}</a>, </span><br/>
+
+<pre>{{country.geonames[0].countryName | json}}</pre>
 <pre>
             {{country | json}}
         </pre>
+
+        
         <pre>
             {{countryNeighbors | json}}
         </pre>
+
 <div class="row">
 	<div class="col-md-6">
 		<a href="#/countries" class="btn btn-default">Browse Countries</a>

@@ -48,10 +48,12 @@ angular.module('ccApp', ['ui.bootstrap', 'ngRoute'])
     })
     .controller('CountryCtrl', function ($scope, $http, $routeParams) {
 //        neighboursJSON ?
-        $http.get('http://api.geonames.org/countryInfoJSON?formatted=true&lang=en&username=lorenb&style=full&country=' + $routeParams.countryCode).success(function (data) {
+        $http.get('http://api.geonames.org/countryInfoJSON?formatted=true&lang=en&username=lorenb&style=full&country=' + $routeParams.countryCode)
+        .success(function (data) {
             $scope.country = data;
         });
-        $http.get('http://api.geonames.org/neighboursJSON?formatted=true&lang=en&username=lorenb&country=' + $routeParams.countryCode).success(function (data) {
+        $http.get('http://api.geonames.org/neighboursJSON?formatted=true&lang=en&username=lorenb&country=' + $routeParams.countryCode)
+        .success(function (data) {
             $scope.countryNeighbors = data;
         });
 

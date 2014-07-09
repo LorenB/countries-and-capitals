@@ -1,83 +1,74 @@
 /**
-* Created by lbarcus on 7/5/14
-*/
+ * Created by lbarcus on 7/5/14
+ */
 
 angular.module('ccApp', ['ui.bootstrap', 'ngRoute'])
-	.controller('HomeCtrl', function($scope){
-		//empty
-	})
-	.config(function($routeProvider){
-		$routeProvider.when('/', {
-			templateUrl : './home.html',
-			controller: 'HomeCtrl'
-		})
-	})
-	.controller('CountriesCtrl', function($scope, $http){
-		$scope.getCountryData = function(){
-			var url = "http://api.geonames.org/countryInfoJSON?formatted=true&lang=en&country=DE&username=lorenb&style=full";
-			var request = {
-				outputMode: 'json',
-				showSourceText: '1',
-				call_back: 'JSON_CALLBACK',
-			};
-			$http({
-                method: 'JSONP',
-                url: url,
-                params: request
-            })
-            .success(function(result) {
-                $scope.result = result;
-                console.log(request);
-                console.log(result);
-            }).
-            error(function() {
-                alert('error');
-            });
-		}
-		$scope.submit = function(){
+    .controller('HomeCtrl', function ($scope) {
+        //empty
+    })
+    .config(function ($routeProvider) {
+        $routeProvider.when('/', {
+            templateUrl: './home.html',
+            controller: 'HomeCtrl'
+        })
+    })
+    .controller('CountriesCtrl', function ($scope, cacRequest) {
+        $scope.collection = cacRequest.geonames;
+        $scope.submit = function () {
             console.log("from submitted...");
             $scope.submitted = true;
             $scope.res = $scope.getCountryData();
         }
-	})
-	.config(function($routeProvider){
-		$routeProvider.when('/countries', {
-			templateUrl : function($http){
-				console.log('executing templateUrl function /countries route');
-				var url = "http://api.geonames.org/countryInfoJSON?formatted=true&lang=en&country=DE&username=lorenb&style=full";
-				var request = {
-					outputMode: 'json',
-					showSourceText: '1',
-					call_back: 'JSON_CALLBACK',
-				};
-				console.log('request object created.');
+    })
+    .config(function ($routeProvider) {
+        $routeProvider.when('/countries', {
+            templateUrl: './countries.html',
+            controller: 'CountriesCtrl',
+            resolve: {
+                cacRequest: [ '$route', '$http', '$q', function ($route, $http, $q) {
+                    var data = $q.defer();
+                    var url = "http://api.geonames.org/countryInfoJSON?formatted=true&lang=en&username=lorenb&style=full";
+//                    var request = {
+//                        outputMode: 'json',
+//                        showSourceText: '1',
+//                        call_back: 'JSON_CALLBACK'
+//                    };
+                    $http({
+                        method: 'GET',
+                        url: url
+                    }).success(function (result) {
+                        data.resolve(result);
+                    }).error(function () {
+                        alert('error');
+                    });
+                    return data.promise;
+                }]
+            }
+        })
+    })
+    .controller('CountryCtrl', function ($scope, $http, $routeParams) {
+//        neighboursJSON ?
+        $http.get('http://api.geonames.org/countryInfoJSON?formatted=true&lang=en&username=lorenb&style=full&country=' + $routeParams.countryCode).success(function (data) {
+            $scope.country = data;
+        });
+        $http.get('http://api.geonames.org/neighboursJSON?formatted=true&lang=en&username=lorenb&country=' + $routeParams.countryCode).success(function (data) {
+            $scope.countryNeighbors = data;
+        });
 
-				var httpobj = $http({
-	                method: 'GET',
-	                url: "http://api.geonames.org/countryInfoJSON?formatted=true&lang=en&country=DE&username=lorenb&style=full"
-	                //params: request
-	            });
-	            console.log("httpobj intialized");
-	            httpobj.success(function(result) {
-	                //$scope.result = result;
-	                //console.log(request);
-	                console.log(result);
-	            });
-				return'./countries.html';
-			},
-			controller : 'CountriesCtrl'
-		}).when('/countries/US', {
-			templateUrl : './country.html',
-			controller : 'CountriesCtrl'
-		})
-	})
-	/*
-	.controller('CountriesCtrl', function($scope){
-		//empty
-	})
-	.config(function($routeProvider){
-		$routeProvider.when('/', {
-			templateUrl : './countries.html'
-			controller : 'CountriesCtrl'
-		})
-	})*/;
+    })
+    .config(function ($routeProvider) {
+        $routeProvider.when('/country/:countryCode', {
+            templateUrl: './country.html',
+            controller: 'CountryCtrl'
+        })
+    })
+    /*
+     .controller('CountriesCtrl', function($scope){
+     //empty
+     })
+     .config(function($routeProvider){
+     $routeProvider.when('/', {
+     templateUrl : './countries.html'
+     controller : 'CountriesCtrl'
+     })
+     })*/;
